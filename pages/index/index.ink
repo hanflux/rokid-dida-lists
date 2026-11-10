@@ -14,6 +14,7 @@ import {
   hasToken,
   getHiddenLists,
   setHiddenLists,
+  plainListName,
 } from '../../lib/dida.js';
 import { groupTasks, summarize } from '../../lib/group.js';
 
@@ -33,6 +34,13 @@ export default {
 
   onLoad() {
     this.refresh();
+  },
+
+  onShow() {
+    // The framework may replay onLoad; one refresh per display is enough.
+    if (this.data.phase === 'ready' && !this.data.lastSync) {
+      this.refresh();
+    }
   },
 
   onUnload() {
@@ -58,7 +66,7 @@ export default {
         groups,
         total,
         summary: summarize(groups),
-        allLists: projects.map((p) => p.name),
+        allLists: projects.map((p) => plainListName(p.name)),
         hiddenLists: getHiddenLists(),
         lastSync: `${now.getMonth() + 1}/${now.getDate()} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`,
       });

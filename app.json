@@ -3,6 +3,7 @@
     "pages/index/index"
   ],
   "permissions": [
+    "INTERNET",
     "RECORD_AUDIO"
   ],
   "window": {
