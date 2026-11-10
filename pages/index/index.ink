@@ -1,6 +1,48 @@
 <script type="application/json" def>
 {
-  "navigationBarTitleText": "滴答清单"
+  "navigationBarTitleText": "滴答清单",
+  "description": "直接读取滴答清单（Dida365）里的待办任务，按逾期、今天、明天、以后分组显示在眼镜绿屏上；支持刷新、查看详情与语音播报。",
+  "schema": {
+    "data": {
+      "type": "object",
+      "properties": {
+        "phase": {
+          "type": "string",
+          "description": "页面状态：loading 表示正在拉取任务，ready 表示已有分组结果，no-token 表示缺少访问令牌，error 表示拉取失败。"
+        },
+        "errorMessage": {
+          "type": "string",
+          "description": "拉取失败时的错误提示文本，供用户口头播报。"
+        },
+        "groups": {
+          "type": "array",
+          "description": "按逾期、今天、明天、以后、无期限分组的任务列表，每个分组包含标题与任务条目。",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string", "description": "任务唯一标识。" },
+              "title": { "type": "string", "description": "任务标题。" },
+              "projectName": { "type": "string", "description": "所属清单名称。" }
+            },
+            "required": ["id", "title"]
+          }
+        },
+        "total": {
+          "type": "number",
+          "description": "当前显示的任务总数。"
+        },
+        "summary": {
+          "type": "string",
+          "description": "任务数量概览，例如逾期 1 项、今天 2 项。"
+        },
+        "lastSync": {
+          "type": "string",
+          "description": "最近一次成功同步的时间文本。"
+        }
+      },
+      "required": ["phase", "groups", "total", "summary"]
+    }
+  }
 }
 </script>
 
