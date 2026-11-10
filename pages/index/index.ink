@@ -1,3 +1,9 @@
+<script type="application/json" def>
+{
+  "navigationBarTitleText": "滴答清单"
+}
+</script>
+
 <script setup>
 import wx from 'wx';
 import {
@@ -255,29 +261,29 @@ export default {
       <text class="meta">{{lastSync}}</text>
     </view>
 
-    <view class="state" wx:if="{{phase === 'loading'}}">
+    <view class="state" ink:if="{{phase === 'loading'}}">
       <text class="state-text">读取中…</text>
     </view>
 
-    <view class="state" wx:if="{{phase === 'no-token'}}">
+    <view class="state" ink:if="{{phase === 'no-token'}}">
       <text class="state-text">尚未连接滴答清单</text>
       <text class="state-hint">请在手机 Rokid AI App 的设置里填入访问令牌</text>
     </view>
 
-    <view class="state" wx:if="{{phase === 'error'}}">
+    <view class="state" ink:if="{{phase === 'error'}}">
       <text class="state-text">读取失败</text>
       <text class="state-hint">{{errorMessage}}</text>
     </view>
 
-    <view class="lists" wx:if="{{showLists}}">
+    <view class="lists" ink:if="{{showLists}}">
       <view class="lists-head">
         <text class="lists-title">显示哪些清单</text>
         <text class="lists-hint">点击切换</text>
       </view>
       <view
         class="list-row"
-        wx:for="{{allLists}}"
-        wx:key="*this"
+        ink:for="{{allLists}}"
+        ink:key="index"
         data-name="{{item}}"
         bindtap="onListTap"
       >
@@ -286,27 +292,27 @@ export default {
       </view>
     </view>
 
-    <scroll-view class="list" scroll-y wx:if="{{phase === 'ready'}}">
-      <view class="group" wx:for="{{groups}}" wx:key="key">
+    <scroll-view class="list" scroll-y="true" ink:if="{{phase === 'ready'}}">
+      <view class="group" ink:for="{{groups}}" ink:for-item="group" ink:key="index">
         <view class="group-head">
-          <text class="group-label">{{item.label}}</text>
-          <text class="group-count">{{item.tasks.length}}</text>
+          <text class="group-label">{{group.label}}</text>
+          <text class="group-count">{{group.tasks.length}}</text>
         </view>
         <view
           class="task"
-          wx:for="{{item.tasks}}"
-          wx:for-item="task"
-          wx:key="id"
+          ink:for="{{group.tasks}}"
+          ink:for-item="task"
+          ink:key="index"
           data-id="{{task.id}}"
           bindtap="onTaskTap"
         >
           <text class="task-title">{{task.title}}</text>
-          <text class="task-meta" wx:if="{{task.due}}">{{task.due}}</text>
-          <text class="task-meta" wx:for="{{task.flags}}" wx:for-item="flag" wx:key="*this">{{flag}}</text>
+          <text class="task-meta" ink:if="{{task.due}}">{{task.due}}</text>
+          <text class="task-meta" ink:for="{{task.flags}}" ink:for-item="flag" ink:key="index">{{flag}}</text>
           <text class="task-list">{{task.listName}}</text>
         </view>
       </view>
-      <view class="empty" wx:if="{{total === 0}}">
+      <view class="empty" ink:if="{{total === 0}}">
         <text class="empty-text">没有待办任务</text>
       </view>
     </scroll-view>
